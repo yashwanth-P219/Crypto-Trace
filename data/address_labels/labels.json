@@ -1,0 +1,74 @@
+[
+  {
+    "address": "0x28C6c06298d514Db089934071355E5743bf21d60",
+    "blockchain": "Ethereum",
+    "entity_name": "Binance 14 (Hot Wallet)",
+    "entity_type": "VASP",
+    "source": "Etherscan Official / Chainalysis Intel",
+    "confidence": "HIGH",
+    "notes": "Major VASP exchange deposit & hot wallet liquidation address"
+  },
+  {
+    "address": "0xDFd5293D8e347dFe59E90eFd55b2956a1343963d",
+    "blockchain": "Ethereum",
+    "entity_name": "Binance 16 (Hot Wallet)",
+    "entity_type": "VASP",
+    "source": "Etherscan Official",
+    "confidence": "HIGH",
+    "notes": "Verified Binance exchange infrastructure"
+  },
+  {
+    "address": "0x56EddB7aa87536c09CCc2793473599fE21A3c17F",
+    "blockchain": "Ethereum",
+    "entity_name": "CoinDCX India Custody",
+    "entity_type": "VASP",
+    "source": "FIU-IND Verified Registry",
+    "confidence": "HIGH",
+    "notes": "Compliant Indian cryptocurrency exchange VASP wallet"
+  },
+  {
+    "address": "0x503828976D22510aad0201ac7EC88293211A23Da",
+    "blockchain": "Ethereum",
+    "entity_name": "WazirX Liquidity Wallet",
+    "entity_type": "VASP",
+    "source": "Public Exchange Disclosures",
+    "confidence": "HIGH",
+    "notes": "Indian exchange hot wallet"
+  },
+  {
+    "address": "0xd90e2f925DA726b50C4Ed8D0Fb90Ad053324F31b",
+    "blockchain": "Ethereum",
+    "entity_name": "Tornado.Cash: 0.1 ETH Mixer",
+    "entity_type": "MIXER",
+    "source": "OFAC Sanctions List",
+    "confidence": "HIGH",
+    "notes": "Sanctioned privacy mixer contract"
+  },
+  {
+    "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+    "blockchain": "Ethereum",
+    "entity_name": "Uniswap V2: Router",
+    "entity_type": "DEX",
+    "source": "Uniswap Protocol",
+    "confidence": "HIGH",
+    "notes": "Decentralized automated market maker"
+  },
+  {
+    "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
+    "blockchain": "Ethereum",
+    "entity_name": "Uniswap V3: SwapRouter",
+    "entity_type": "DEX",
+    "source": "Uniswap Protocol",
+    "confidence": "HIGH",
+    "notes": "DEX routing contract"
+  },
+  {
+    "address": "0xa0c68c638235ee32657e8f720a23cec1bfc77c77",
+    "blockchain": "Ethereum",
+    "entity_name": "Polygon (Matic) Bridge",
+    "entity_type": "BRIDGE",
+    "source": "Polygon Foundation",
+    "confidence": "HIGH",
+    "notes": "Cross-chain bridge gateway to Polygon network"
+  }
+]
