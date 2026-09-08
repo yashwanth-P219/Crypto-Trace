@@ -8,7 +8,6 @@
 [![React](https://img.shields.io/badge/React-18%20%2B%20TypeScript-61DAFB?style=flat-square&logo=react&logoColor=black)](https://reactjs.org/)
 [![Web3.py](https://img.shields.io/badge/Web3.py-Ethereum%20RPC-F16822?style=flat-square&logo=ethereum&logoColor=white)](https://web3py.readthedocs.io/)
 [![NetworkX](https://img.shields.io/badge/NetworkX-Directed%20Graph-blue?style=flat-square)](https://networkx.org/)
-[![SIH 2026](https://img.shields.io/badge/SIH-2026%20Finalist-FF9933?style=flat-square&logo=target&logoColor=white)](https://www.sih.gov.in/)
 [![MHA / I4C](https://img.shields.io/badge/MHA%20%2F%20I4C-SIH26183-138808?style=flat-square)](https://i4c.mha.gov.in/)
 [![Render](https://img.shields.io/badge/Render-Live%20Platform-46E3B7?style=flat-square&logo=render&logoColor=black)](https://cryptotrace-frontend-bemv.onrender.com/)
 [![Tests Passing](https://img.shields.io/badge/Tests-12%2F12%20Passed-brightgreen?style=flat-square&logo=checkmarx&logoColor=white)](tests/)
