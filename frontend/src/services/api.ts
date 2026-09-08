@@ -33,7 +33,17 @@ import {
   CaseRecommendationsResponse
 } from '../types';
 
-function getApiBase(): string {
+export function getApiBase(): string {
+  if (typeof window !== 'undefined') {
+    const custom = localStorage.getItem('cryptotrace_api_base');
+    if (custom && custom.trim()) {
+      let u = custom.trim();
+      if (!u.startsWith('http://') && !u.startsWith('https://')) {
+        u = `https://${u}`;
+      }
+      return `${u.replace(/\/$/, '')}/api`;
+    }
+  }
   let envUrl = ((import.meta as any).env?.VITE_API_URL || (import.meta as any).env?.VITE_API_BASE_URL || '').trim();
   if (envUrl) {
     if (!envUrl.startsWith('http://') && !envUrl.startsWith('https://')) {
@@ -41,14 +51,21 @@ function getApiBase(): string {
     }
     return `${envUrl.replace(/\/$/, '')}/api`;
   }
-  // If deployed on Vercel or any non-localhost domain without an .env variable, directly target the live Render backend
-  if (typeof window !== 'undefined' && window.location.hostname && !window.location.hostname.includes('localhost') && window.location.hostname !== '127.0.0.1') {
-    return 'https://cryptotrace-backend.onrender.com/api';
-  }
   return '/api';
 }
 
-const API_BASE = getApiBase();
+export function setApiBase(url: string) {
+  if (typeof window !== 'undefined') {
+    if (url && url.trim()) {
+      localStorage.setItem('cryptotrace_api_base', url.trim());
+    } else {
+      localStorage.removeItem('cryptotrace_api_base');
+    }
+    window.location.reload();
+  }
+}
+
+export const API_BASE = getApiBase();
 
 function getAuthHeader(): HeadersInit {
   const token = localStorage.getItem('sih_auth_token');
