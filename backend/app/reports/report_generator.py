@@ -14,6 +14,7 @@ from app.graph.graph_builder import GraphBuilder
 from app.graph.path_analysis import PathAnalyzer
 from app.risk.explainability import RiskExplainability
 from app.risk.priority import InvestigationPriorityEngine
+from app.risk.risk_service import RiskService
 
 class ReportGenerator:
     @staticmethod
@@ -27,11 +28,24 @@ class ReportGenerator:
         if not case:
             raise ValueError(f"Case {case_id} not found")
 
+        norm_suspect = (case.suspect_wallet or "").strip().lower()
+
+        # Query direct transactions involving suspect wallet or case (case-insensitive)
         transactions = db.query(Transaction).filter(
             (Transaction.case_id == case_id) |
-            (Transaction.from_address == case.suspect_wallet) |
-            (Transaction.to_address == case.suspect_wallet)
+            (Transaction.from_address.ilike(norm_suspect)) |
+            (Transaction.to_address.ilike(norm_suspect))
         ).all()
+
+        # Multi-hop counterparty expansion to trace through hops to VASPs
+        counterparties = {t.from_address.lower() for t in transactions if t.from_address} | {t.to_address.lower() for t in transactions if t.to_address}
+        if counterparties:
+            more_txs = db.query(Transaction).filter(
+                (Transaction.from_address.in_(counterparties)) |
+                (Transaction.to_address.in_(counterparties))
+            ).all()
+            tx_map = {t.transaction_hash: t for t in transactions + more_txs}
+            transactions = list(tx_map.values())
 
         labels = {lbl.address.lower(): lbl for lbl in db.query(AddressLabel).all()}
         findings = db.query(RiskFinding).filter(RiskFinding.case_id == case_id).all()
@@ -45,21 +59,68 @@ class ReportGenerator:
         graph = gb.get_graph()
         pa = PathAnalyzer(graph)
 
-        subgraph_meta = pa.get_k_hop_subgraph(case.suspect_wallet, max_hops=4)
-        vasp_paths = pa.trace_paths_to_vasp(case.suspect_wallet, max_hops=5)
-        ranked_wallets = InvestigationPriorityEngine.rank_wallets(subgraph_meta["nodes"], labels, case.suspect_wallet)
+        subgraph_meta = pa.get_k_hop_subgraph(norm_suspect, max_hops=4)
+        vasp_paths = pa.trace_paths_to_vasp(norm_suspect, max_hops=5)
+        ranked_wallets = InvestigationPriorityEngine.rank_wallets(subgraph_meta["nodes"], labels, norm_suspect)
 
-        findings_dicts = [
-            {
-                "finding_type": f.finding_type,
-                "severity": f.severity.value,
-                "score_delta": f.score_delta,
-                "explanation": f.explanation,
-                "evidence_txs": f.evidence_txs
-            }
-            for f in findings
-        ]
-        risk_summary = RiskExplainability.compute_risk_score(findings_dicts)
+        # AI Risk Assessment & Dynamic Behavioral Patterns
+        case_risk = None
+        try:
+            case_risk = RiskService.assess_case_risk(db=db, case_id=case_id, max_hops=4)
+        except Exception:
+            case_risk = None
+
+        patterns_inferred = []
+        if findings:
+            for f in findings:
+                patterns_inferred.append({
+                    "type": f.finding_type,
+                    "severity": f.severity.value if hasattr(f.severity, "value") else str(f.severity),
+                    "explanation": f.explanation,
+                    "evidence_txs": f.evidence_txs
+                })
+
+        if case_risk and case_risk.contributions:
+            for c in case_risk.contributions:
+                if not any(p.get("type") == c.factor for p in patterns_inferred):
+                    sev = "HIGH" if c.points >= 20 else ("MEDIUM" if c.points >= 10 else "LOW")
+                    patterns_inferred.append({
+                        "type": c.factor,
+                        "severity": sev,
+                        "explanation": c.explanation,
+                        "evidence_txs": c.supporting_transactions
+                    })
+
+        # Calculate composite risk score
+        risk_score = case_risk.risk_score if case_risk else 0.0
+        risk_level = case_risk.risk_category if case_risk else "LOW"
+        risk_breakdown = [f"{c.factor}: +{c.points} pts ({c.explanation})" for c in case_risk.contributions] if case_risk else []
+
+        if findings:
+            findings_dicts = [
+                {
+                    "finding_type": f.finding_type,
+                    "severity": f.severity.value if hasattr(f.severity, "value") else str(f.severity),
+                    "score_delta": f.score_delta,
+                    "explanation": f.explanation,
+                    "evidence_txs": f.evidence_txs
+                }
+                for f in findings
+            ]
+            static_summary = RiskExplainability.compute_risk_score(findings_dicts)
+            if static_summary.get("score", 0) > risk_score:
+                risk_score = static_summary["score"]
+                risk_level = static_summary["level"]
+                risk_breakdown = static_summary["reasons"]
+
+        # Initial transaction hash fallback
+        init_tx = case.transaction_hash
+        if not init_tx and transactions:
+            inbound = [t for t in transactions if (t.to_address or "").lower() == norm_suspect]
+            if inbound:
+                init_tx = inbound[0].transaction_hash
+            else:
+                init_tx = transactions[0].transaction_hash
 
         report_id = f"REP-{uuid.uuid4().hex[:8].upper()}"
         title = custom_title or f"Forensic Crypto Investigation Report: {case.complaint_reference}"
@@ -86,7 +147,7 @@ class ReportGenerator:
             "2_incident_summary": {
                 "description": case.description or "Victim reported unauthorized cryptocurrency transfer to suspect address.",
                 "incident_date": case.incident_date.isoformat(),
-                "initial_transaction_hash": case.transaction_hash
+                "initial_transaction_hash": init_tx
             },
             "3_victim_information": {
                 "name": case.victim_name,
@@ -116,19 +177,11 @@ class ReportGenerator:
                 "vasp_paths_found": len(vasp_paths),
                 "primary_terminal_path": vasp_paths[0] if vasp_paths else None
             },
-            "7_suspicious_patterns_inference": [
-                {
-                    "type": f.finding_type,
-                    "severity": f.severity.value,
-                    "explanation": f.explanation,
-                    "evidence_txs": f.evidence_txs
-                }
-                for f in findings
-            ],
+            "7_suspicious_patterns_inference": patterns_inferred,
             "8_ai_risk_assessment": {
-                "score": risk_summary["score"],
-                "level": risk_summary["level"],
-                "breakdown": risk_summary["reasons"]
+                "score": risk_score,
+                "level": risk_level,
+                "breakdown": risk_breakdown
             },
             "9_priority_actionable_wallets": ranked_wallets[:5],
             "10_evidence_locker_references": [
