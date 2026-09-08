@@ -118,6 +118,17 @@ app.include_router(investigators_router, prefix="/api")
 app.include_router(notifications_router)
 app.include_router(notifications_router, prefix="/api")
 
+@app.get("/", tags=["System"])
+def root_index():
+    return {
+        "status": "online",
+        "app": "CryptoTrace Blockchain Fraud Analytics Platform",
+        "message": "CryptoTrace FastAPI backend is running successfully.",
+        "documentation": "/docs",
+        "health": "/health",
+        "api_endpoints": "/api"
+    }
+
 @app.get("/health", tags=["System"])
 @app.get("/api/health", tags=["System"])
 def health_check():
