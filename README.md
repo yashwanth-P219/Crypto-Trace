@@ -10,11 +10,11 @@
 [![NetworkX](https://img.shields.io/badge/NetworkX-Directed%20Graph-blue?style=flat-square)](https://networkx.org/)
 [![SIH 2026](https://img.shields.io/badge/SIH-2026%20Finalist-FF9933?style=flat-square&logo=target&logoColor=white)](https://www.sih.gov.in/)
 [![MHA / I4C](https://img.shields.io/badge/MHA%20%2F%20I4C-SIH26183-138808?style=flat-square)](https://i4c.mha.gov.in/)
-[![Render](https://img.shields.io/badge/Render-Live%20Platform-46E3B7?style=flat-square&logo=render&logoColor=black)](https://cryptotrace.onrender.com/)
+[![Render](https://img.shields.io/badge/Render-Live%20Platform-46E3B7?style=flat-square&logo=render&logoColor=black)](https://cryptotrace-frontend-bemv.onrender.com/)
 [![Tests Passing](https://img.shields.io/badge/Tests-12%2F12%20Passed-brightgreen?style=flat-square&logo=checkmarx&logoColor=white)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
-[🌐 Live Platform](https://cryptotrace.onrender.com/) • [🎯 Problem Statement](#-smart-india-hackathon-problem-statement-sih26183) • [💡 Solution Overview](#-solution-overview) • [✨ Core Features](#-core-features--innovations) • [🏛️ System Architecture](#️-system-architecture) • [⚖️ Forensic Truth Taxonomy](#️-four-tier-forensic-truth-taxonomy) • [🛠️ Tech Stack](#️-complete-technology-stack) • [⚙️ Setup & Installation](#-installation--setup) • [🧪 Testing](#-automated-testing--verification) • [📄 LICENSE](LICENSE)
+[🌐 Live Platform](https://cryptotrace-frontend-bemv.onrender.com/) • [🎯 Problem Statement](#-smart-india-hackathon-problem-statement-sih26183) • [💡 Solution Overview](#-solution-overview) • [✨ Core Features](#-core-features--innovations) • [🏛️ System Architecture](#️-system-architecture) • [⚖️ Forensic Truth Taxonomy](#️-four-tier-forensic-truth-taxonomy) • [🛠️ Tech Stack](#️-complete-technology-stack) • [⚙️ Setup & Installation](#-installation--setup) • [🧪 Testing](#-automated-testing--verification) • [📄 LICENSE](LICENSE)
 
 </div>
 
