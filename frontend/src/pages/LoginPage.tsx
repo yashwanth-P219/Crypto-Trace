@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Shield, User, Lock, ArrowRight, ShieldAlert, Server, Settings2 } from 'lucide-react';
-import { api, getApiBase, setApiBase } from '../services/api';
+import { Shield, User, Lock, ArrowRight, ShieldAlert } from 'lucide-react';
+import { api } from '../services/api';
 import { User as UserType } from '../types';
 
 interface LoginPageProps {
@@ -13,8 +13,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSwitchTo
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showConfig, setShowConfig] = useState(false);
-  const [customUrl, setCustomUrl] = useState(localStorage.getItem('cryptotrace_api_base') || '');
 
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -52,73 +50,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSwitchTo
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4">
         <div className="bg-white border border-slate-200 py-8 px-6 shadow-sm rounded-2xl sm:px-10 space-y-6">
           {error && (
-            <div className="space-y-2">
-              <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
-                <ShieldAlert className="w-4 h-4 shrink-0 text-red-600" />
-                <span className="font-medium">{error}</span>
-              </div>
-              {error.toLowerCase().includes('fetch') && (
-                <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1.5">
-                  <div className="flex items-center gap-1.5 font-bold text-amber-800">
-                    <Server className="w-3.5 h-3.5" />
-                    <span>Backend Connection Notice</span>
-                  </div>
-                  <p className="text-[11px] text-amber-700">
-                    The backend on Render may be waking up (free tier spins down after 15 mins of inactivity), or your Render backend URL needs to be linked.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setShowConfig(true)}
-                    className="text-[11px] font-bold text-blue-700 underline hover:text-blue-900"
-                  >
-                    Configure Backend URL ({getApiBase()})
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-
-          {showConfig && (
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-xs">
-              <div className="font-bold text-slate-700 flex items-center justify-between">
-                <span>Configure Backend Web Service URL</span>
-                <button type="button" onClick={() => setShowConfig(false)} className="text-slate-400 hover:text-slate-600">×</button>
-              </div>
-              <p className="text-[10px] text-slate-500">
-                Paste your live Render backend URL from your Render dashboard (e.g. <code>https://cryptotrace-backend-xxxx.onrender.com</code>):
-              </p>
-              <div className="flex gap-1.5">
-                <input
-                  type="text"
-                  value={customUrl}
-                  onChange={(e) => setCustomUrl(e.target.value)}
-                  placeholder="https://your-backend.onrender.com"
-                  className="flex-1 px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs"
-                />
-                <button
-                  type="button"
-                  onClick={() => setApiBase(customUrl)}
-                  className="px-3 py-1.5 bg-blue-600 text-white rounded-lg font-bold text-xs hover:bg-blue-700"
-                >
-                  Save & Reload
-                </button>
-              </div>
-              <div className="flex gap-2 text-[10px]">
-                <button
-                  type="button"
-                  onClick={() => setApiBase('http://127.0.0.1:8000')}
-                  className="text-blue-600 underline"
-                >
-                  Use Localhost (127.0.0.1:8000)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setApiBase('')}
-                  className="text-slate-500 underline"
-                >
-                  Reset Default
-                </button>
-              </div>
+            <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+              <ShieldAlert className="w-4 h-4 shrink-0 text-red-600" />
+              <span className="font-medium">{error}</span>
             </div>
           )}
 

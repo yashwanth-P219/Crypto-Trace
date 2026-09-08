@@ -33,17 +33,7 @@ import {
   CaseRecommendationsResponse
 } from '../types';
 
-export function getApiBase(): string {
-  if (typeof window !== 'undefined') {
-    const custom = localStorage.getItem('cryptotrace_api_base');
-    if (custom && custom.trim()) {
-      let u = custom.trim();
-      if (!u.startsWith('http://') && !u.startsWith('https://')) {
-        u = `https://${u}`;
-      }
-      return `${u.replace(/\/$/, '')}/api`;
-    }
-  }
+function getApiBase(): string {
   let envUrl = ((import.meta as any).env?.VITE_API_URL || (import.meta as any).env?.VITE_API_BASE_URL || '').trim();
   if (envUrl) {
     if (!envUrl.startsWith('http://') && !envUrl.startsWith('https://')) {
@@ -54,18 +44,7 @@ export function getApiBase(): string {
   return '/api';
 }
 
-export function setApiBase(url: string) {
-  if (typeof window !== 'undefined') {
-    if (url && url.trim()) {
-      localStorage.setItem('cryptotrace_api_base', url.trim());
-    } else {
-      localStorage.removeItem('cryptotrace_api_base');
-    }
-    window.location.reload();
-  }
-}
-
-export const API_BASE = getApiBase();
+const API_BASE = getApiBase();
 
 function getAuthHeader(): HeadersInit {
   const token = localStorage.getItem('sih_auth_token');
