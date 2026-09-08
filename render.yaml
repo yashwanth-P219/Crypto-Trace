@@ -30,7 +30,7 @@ services:
 
   # 2. React Vite Frontend Static Site
   - type: web
-    name: cryptotrace-frontend
+    name: cryptotrace
     runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
