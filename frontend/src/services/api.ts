@@ -33,11 +33,47 @@ import {
   CaseRecommendationsResponse
 } from '../types';
 
-const API_BASE = (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '') + '/api';
+function getApiBase(): string {
+  let envUrl = ((import.meta as any).env?.VITE_API_URL || (import.meta as any).env?.VITE_API_BASE_URL || '').trim();
+  if (envUrl) {
+    if (!envUrl.startsWith('http://') && !envUrl.startsWith('https://')) {
+      envUrl = `https://${envUrl}`;
+    }
+    return `${envUrl.replace(/\/$/, '')}/api`;
+  }
+  return '/api';
+}
+
+const API_BASE = getApiBase();
 
 function getAuthHeader(): HeadersInit {
   const token = localStorage.getItem('sih_auth_token');
   return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+async function parseJsonResponse<T = any>(res: Response, defaultMessage: string = 'Operation failed'): Promise<T> {
+  const contentType = res.headers.get('content-type') || '';
+  if (!res.ok) {
+    if (contentType.includes('application/json')) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || defaultMessage);
+    } else {
+      if (res.status === 401) {
+        throw new Error('Incorrect username or password. Please try investigator / password123.');
+      } else if (res.status === 404) {
+        throw new Error('API route not found (404). Please ensure the backend web service is running.');
+      } else if (res.status >= 500) {
+        throw new Error('Backend server is waking up on Render (free tier cold start). Please wait 30 seconds and try again.');
+      }
+      throw new Error(defaultMessage);
+    }
+  }
+
+  if (!contentType.includes('application/json')) {
+    throw new Error('Backend service returned a non-JSON response. It may still be starting up on Render. Please wait 30 seconds and try again.');
+  }
+
+  return res.json();
 }
 
 export const api = {
@@ -48,11 +84,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
     });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({ detail: 'Authentication failed' }));
-      throw new Error(err.detail || 'Login failed');
-    }
-    const data = await res.json();
+    const data = await parseJsonResponse(res, 'Authentication failed. Please verify credentials.');
     localStorage.setItem('sih_auth_token', data.access_token);
     localStorage.setItem('sih_user', JSON.stringify(data.user));
     return data;

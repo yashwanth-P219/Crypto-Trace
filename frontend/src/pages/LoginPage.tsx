@@ -109,8 +109,48 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onSwitchTo
                 </>
               )}
             </button>
+
+            {/* Quick Demo Access Credentials */}
+            <div className="pt-2 border-t border-slate-100">
+              <p className="text-[11px] font-semibold text-slate-500 mb-2 text-center">
+                Quick Demo Accounts (1-Click Fill):
+              </p>
+              <div className="grid grid-cols-3 gap-2 text-[10px]">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUsername('investigator');
+                    setPassword('password123');
+                  }}
+                  className="py-1.5 px-2 rounded-lg bg-blue-50 border border-blue-200 text-blue-700 font-bold hover:bg-blue-100 transition-colors text-center"
+                >
+                  Investigator
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUsername('supervisor');
+                    setPassword('password123');
+                  }}
+                  className="py-1.5 px-2 rounded-lg bg-purple-50 border border-purple-200 text-purple-700 font-bold hover:bg-purple-100 transition-colors text-center"
+                >
+                  Supervisor
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUsername('admin');
+                    setPassword('password123');
+                  }}
+                  className="py-1.5 px-2 rounded-lg bg-slate-100 border border-slate-200 text-slate-700 font-bold hover:bg-slate-200 transition-colors text-center"
+                >
+                  Admin
+                </button>
+              </div>
+            </div>
+
             {onSwitchToSignup && (
-              <div className="border-t border-slate-100 pt-4 text-center">
+              <div className="border-t border-slate-100 pt-3 text-center">
                 <p className="text-xs text-slate-500">
                   New to CryptoTrace?{' '}
                   <button
