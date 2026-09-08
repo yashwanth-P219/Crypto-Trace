@@ -33,7 +33,7 @@ import {
   CaseRecommendationsResponse
 } from '../types';
 
-const API_BASE = '/api';
+const API_BASE = (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '') + '/api';
 
 function getAuthHeader(): HeadersInit {
   const token = localStorage.getItem('sih_auth_token');
