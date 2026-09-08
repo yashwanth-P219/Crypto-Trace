@@ -21,6 +21,12 @@ services:
         value: https://ethereum-sepolia-rpc.publicnode.com
       - key: ETHEREUM_RPC_URL
         value: https://eth.llamarpc.com
+      - key: DATABASE_URL
+        value: postgresql://postgres.obcxpsriultifppkskax:mwbYpV4kCJWs5R7V@aws-0-ap-south-1.pooler.supabase.com:5432/postgres
+      - key: SUPABASE_URL
+        value: https://obcxpsriultifppkskax.supabase.co
+      - key: SUPABASE_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9iY3hwc3JpdWx0aWZwcGtza2F4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg2ODAyMjgsImV4cCI6MjEwNDI1NjIyOH0.bbzfjZybyx4Bt0Y5quu8K7AZY_URdWQIebn2pN8XcGw
 
   # 2. React Vite Frontend Static Site
   - type: web

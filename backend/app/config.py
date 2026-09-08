@@ -4,8 +4,13 @@ from pydantic_settings import BaseSettings
 from typing import Optional
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = (BASE_DIR.parent / "data").resolve()
-DATA_DIR.mkdir(parents=True, exist_ok=True)
+if (BASE_DIR / "data" / "sih26183.db").exists():
+    DATA_DIR = (BASE_DIR / "data").resolve()
+elif (BASE_DIR.parent / "data" / "sih26183.db").exists():
+    DATA_DIR = (BASE_DIR.parent / "data").resolve()
+else:
+    DATA_DIR = (BASE_DIR / "data").resolve()
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
 DB_PATH = (DATA_DIR / "sih26183.db").as_posix()
 
 class Settings(BaseSettings):
@@ -22,7 +27,10 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 480
 
     # Database
-    DATABASE_URL: str = f"sqlite:///{DB_PATH}"
+    DATABASE_URL: str = os.getenv(
+        "DATABASE_URL",
+        "postgresql://postgres.obcxpsriultifppkskax:mwbYpV4kCJWs5R7V@aws-0-ap-south-1.pooler.supabase.com:5432/postgres"
+    )
 
     # Blockchain RPCs
     ETHEREUM_RPC_URL: str = "https://eth.llamarpc.com"
@@ -31,8 +39,14 @@ class Settings(BaseSettings):
     BNB_RPC_URL: str = "https://bsc-dataseed.binance.org"
 
     # Supabase Configuration
-    SUPABASE_URL: Optional[str] = None
-    SUPABASE_KEY: Optional[str] = None
+    SUPABASE_URL: Optional[str] = os.getenv(
+        "SUPABASE_URL",
+        "https://obcxpsriultifppkskax.supabase.co"
+    )
+    SUPABASE_KEY: Optional[str] = os.getenv(
+        "SUPABASE_KEY",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9iY3hwc3JpdWx0aWZwcGtza2F4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg2ODAyMjgsImV4cCI6MjEwNDI1NjIyOH0.bbzfjZybyx4Bt0Y5quu8K7AZY_URdWQIebn2pN8XcGw"
+    )
 
     # Block Explorer & Transaction History API Keys (Optional)
     ETHERSCAN_API_KEY: Optional[str] = None
@@ -52,7 +66,7 @@ class Settings(BaseSettings):
 settings = Settings()
 
 # Ensure data directory exists
-data_dir = BASE_DIR.parent / "data"
+data_dir = DATA_DIR
 data_dir.mkdir(parents=True, exist_ok=True)
 address_labels_dir = data_dir / "address_labels"
 address_labels_dir.mkdir(parents=True, exist_ok=True)

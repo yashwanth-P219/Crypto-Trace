@@ -41,6 +41,10 @@ function getApiBase(): string {
     }
     return `${envUrl.replace(/\/$/, '')}/api`;
   }
+  // If deployed on Vercel or any non-localhost domain without an .env variable, directly target the live Render backend
+  if (typeof window !== 'undefined' && window.location.hostname && !window.location.hostname.includes('localhost') && window.location.hostname !== '127.0.0.1') {
+    return 'https://cryptotrace-backend.onrender.com/api';
+  }
   return '/api';
 }
 
@@ -870,11 +874,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({ detail: 'Registration failed' }));
-      throw new Error(err.detail || 'Registration failed');
-    }
-    return res.json();
+    return parseJsonResponse<User>(res, 'Registration failed. Please check details.');
   },
 
   // Investigators
