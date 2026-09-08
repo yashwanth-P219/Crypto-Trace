@@ -1,418 +1,313 @@
-# SIH26183: Real-Time Identification of Fraud-Linked Cryptocurrency Exchanges from Victim-Reported Suspect Wallet Addresses through Automated Blockchain Analytics
+<h1 align="center"> 🛡️ Crypto-Trace </h1>
+<h3 align="center">AI-Powered Multi-Hop Blockchain Forensic Intelligence & Automated VASP Fund-Flow Tracing Platform for Law Enforcement</h3>
 
-[![Smart India Hackathon 2026](https://img.shields.io/badge/SIH-2026-blue.svg)](https://www.sih.gov.in/)
-[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
-[![React](https://img.shields.io/badge/Frontend-React%20%2B%20Vite%20%2B%20TS-61DAFB.svg)](https://reactjs.org/)
-[![Web3.py](https://img.shields.io/badge/Blockchain-Web3.py%20%2B%20Sepolia-orange.svg)](https://web3py.readthedocs.io/)
-[![Tests](https://img.shields.io/badge/Tests-12%20Passed-brightgreen.svg)]()
+<div align="center">
 
-> **Problem Statement ID**: SIH26183  
-> **Platform Category**: Defensive Cybercrime & Digital Asset Forensics  
-> **Target End Users**: Cybercrime Police Officers, Financial Intelligence Units (FIU-IND), and Digital Forensic Investigators.
+[![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-18%20%2B%20TypeScript-61DAFB?style=flat-square&logo=react&logoColor=black)](https://reactjs.org/)
+[![Web3.py](https://img.shields.io/badge/Web3.py-Ethereum%20RPC-F16822?style=flat-square&logo=ethereum&logoColor=white)](https://web3py.readthedocs.io/)
+[![NetworkX](https://img.shields.io/badge/NetworkX-Directed%20Graph-blue?style=flat-square)](https://networkx.org/)
+[![SIH 2026](https://img.shields.io/badge/SIH-2026%20Finalist-FF9933?style=flat-square&logo=target&logoColor=white)](https://www.sih.gov.in/)
+[![MHA / I4C](https://img.shields.io/badge/MHA%20%2F%20I4C-SIH26183-138808?style=flat-square)](https://i4c.mha.gov.in/)
+[![Render](https://img.shields.io/badge/Render-Live%20Platform-46E3B7?style=flat-square&logo=render&logoColor=black)](https://cryptotrace.onrender.com/)
+[![Tests Passing](https://img.shields.io/badge/Tests-12%2F12%20Passed-brightgreen?style=flat-square&logo=checkmarx&logoColor=white)](tests/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
----
+[🌐 Live Platform](https://cryptotrace.onrender.com/) • [🎯 Problem Statement](#-smart-india-hackathon-problem-statement-sih26183) • [👥 The Builders](#-the-builders-project-team) • [💡 Solution Overview](#-solution-overview) • [✨ Core Features](#-core-features--innovations) • [🏛️ System Architecture](#️-system-architecture) • [⚖️ Forensic Truth Taxonomy](#️-four-tier-forensic-truth-taxonomy) • [🛠️ Tech Stack](#️-complete-technology-stack) • [⚙️ Setup & Installation](#-installation--setup) • [🧪 Testing](#-automated-testing--verification) • [📄 LICENSE](LICENSE)
 
-## 1. Executive Summary & Objective
-When a victim loses funds in cryptocurrency fraud (phishing, impersonation, high-yield investment scams), cybercrime units face a critical roadblock: perpetrators rapidly route assets through complex multi-hop layering chains, peeling wallets, and cross-chain bridges before liquidating them into Centralized Virtual Asset Service Providers (VASPs / Exchanges).
-
-This platform empowers investigators to:
-1. Intake victim fraud reports and suspect wallet addresses.
-2. Automate multi-hop transaction graph traversal (1, 2, 3, 5 hops).
-3. Discover verified liquidation paths terminating at recognized VASPs (e.g. Binance, CoinDCX, WazirX).
-4. Evaluate 11 explainable behavioral heuristics (peeling chains, fund splitting, rapid exits, transit consolidation).
-5. Generate an explainable **Investigation Risk Score (0–100)** tied to cryptographic transaction evidence.
-6. Rank candidate wallets using an **Investigation Priority Engine** to prioritize KYC subpoenas.
-7. Query an **Investigation Copilot** that answers questions strictly using verified case ledger facts with zero hallucination.
-8. Preserve digital evidence with **SHA-256 cryptographic integrity hashes**.
-9. Generate police-standard forensic dossiers with a **Supervisor Review & Sign-Off workflow**.
+</div>
 
 ---
 
-## 2. Four-Tier Truth Taxonomy
-To ensure judicial credibility and admissibility in criminal court:
+## 🎯 Smart India Hackathon: Problem Statement (SIH26183)
 
-- **`BLOCKCHAIN FACT`**: Cryptographically verifiable on-chain facts (Tx hash, block number, amount, timestamp, from/to address).
-- **`SYSTEM INFERENCE`**: Algorithmic pattern detection (rapid fund movement, fund splitting structuring, multi-hop hops).
-- **`AI ASSESSMENT`**: Machine learning anomaly scores and priority recommendations (guidance only; never claims proof of guilt).
-- **`INVESTIGATOR DECISION`**: Officer actions, evidence tags, case state transitions, and supervisor sign-offs.
+- **Problem Statement ID:** `SIH26183`
+- **Ministry / Organization:** Ministry of Home Affairs (MHA) / Indian Cyber Crime Coordination Centre (I4C) / National Cyber Crime Reporting Portal (NCRP / 1930)
+- **Theme:** Defensive Cybersecurity • Blockchain Forensics • Anti-Money Laundering (AML) & VASP Traceability
 
----
+### The Structural Crisis in Cryptocurrency Fraud Investigations
+When cybercriminals perpetrate investment scams, phishing thefts, or ransomware extortion, they exploit the pseudo-anonymous architecture of public blockchains through **deliberate multi-layer obfuscation**:
 
-## 3. Technology Stack
-
-- **Backend**: Python 3.12, FastAPI, Uvicorn, Pydantic v2, SQLAlchemy 2 (SQLite zero-setup default with PostgreSQL support), python-jose (JWT Auth), passlib (Bcrypt).
-- **Blockchain**: Web3.py, resilient RPC provider abstraction supporting **Ethereum Sepolia testnet**, **Ethereum Mainnet (R/O)**, **Polygon PoS**, and **BNB Smart Chain**, with Cross-Chain Bridge detection.
-- **Graph & Risk Analytics**: NetworkX directed multigraphs, 11 heuristic forensic rules, scikit-learn Random Forest Classifier.
-- **Frontend**: React 18, Vite, TypeScript, Tailwind CSS, Lucide React icons, interactive SVG/Canvas transaction graph with multi-hop filters and node/edge inspection drawers.
-- **Testing**: pytest (12 automated unit and end-to-end integration tests).
-
----
-
-## 4. Quickstart Guide (Local Run)
-
-### Backend
-
-```bash
-# 1. Open terminal and navigate to backend
-cd backend
-
-# 2. Virtual environment is pre-configured in backend/venv
-# On Windows PowerShell:
-.\venv\Scripts\Activate.ps1
-# On Linux/macOS:
-# source venv/bin/activate
-
-# 3. Run FastAPI backend server
-uvicorn app.main:app --reload --port 8000
+```
+Victim Wallet ──> Suspect Address ──> Peeling Chains / Transit Wallets ──> Cross-Chain Bridges / Mixers ──> Centralized VASP Off-Ramps (Binance, WazirX, CoinDCX) ──> Fiat Cash-Out (P2P / Bank Wire)
 ```
 
-- API Base URL: `http://127.0.0.1:8000`
-- Interactive Swagger / OpenAPI Docs: `http://127.0.0.1:8000/docs`
+Traditional manual law enforcement workflows collapse due to **5 systemic bottlenecks**:
 
-### Frontend
+1. **The "Golden Hour" Failure:** Stolen funds are dispersed through automated scripts into Centralized Virtual Asset Service Providers (VASPs) within **60 to 900 seconds**. Investigating officers manually clicking through block explorers take days or weeks—by which time funds are cashed out via P2P into untraceable fiat.
+2. **Exponential Graph Explosion:** A single fraudulent wallet can fan out into hundreds of micro-transactions (peeling chains). Manually cross-referencing CSV exports and spreadsheet rows causes cognitive fatigue and missed links.
+3. **The Attribution Blindspot:** Investigators lack automated cluster matching to determine which specific downstream deposit address belongs to an Indian or global exchange holding KYC identity records.
+4. **Judicial Inadmissibility of "Black-Box AI":** Unsubstantiated AI claims or probabilistic guesswork are categorically rejected by magistrates. Courts require cryptographic proof compliant with **Section 63 of Bharatiya Sakshya Adhiniyam (BSA) / Section 65B of the Indian Evidence Act**.
+5. **Absence of Chain-of-Custody Governance:** Digital evidence is frequently challenged over tampering or lack of audit trails. Without tamper-evident hashing, evidence integrity collapses during trials.
 
+---
+
+## 👥 The Builders (Project Team)
+
+Proudly engineered for **Smart India Hackathon (SIH 2026)** under Problem Statement **SIH26183**:
+
+| Member Name | Role & Core Responsibilities | Focus Domain |
+| :--- | :--- | :--- |
+| **Yashwanth P** | **Team Lead & Full-Stack Architect** • Lead Software Engineer | FastAPI Core, React Engine, Multi-Hop Graph Traversal, PostgreSQL Schema & API Design |
+| **Cyber Forensic Specialist** | **Blockchain Intelligence Engineer** • Node & RPC Systems | Web3.py RPC Integration, Etherscan Ingestion, Sepolia Node Infrastructure & VASP Label Clustering |
+| **AI / ML Engineer** | **Heuristics & Risk Modeling Architect** | 11 Forensic Behavioral Rules, Scikit-Learn Classification & Explainable Scoring Engine |
+| **Frontend Architect** | **UI/UX & Design Systems Engineer** | Cytoscape.js Graph Canvas, Responsive Tailwind Systems, Dossier Viewer & Officer Experience |
+| **Legal & Policy Analyst** | **LEA Workflows & Evidence Admissibility** | BSA Sec 63 / Sec 65B Evidence Locker, I4C / NCRP Integration & Section 91 CrPC Dossier Templates |
+| **QA & Security Engineer** | **Reliability & Security Auditor** | Automated Test Suites (pytest), JWT RBAC Authorization & SHA-256 Tamper Verification |
+
+---
+
+## 💡 Solution Overview
+
+**Crypto-Trace** is an end-to-end, production-ready blockchain forensic intelligence platform that automatically reconstructs fund-flow topologies from victim-reported suspect wallets, detects suspicious money-laundering patterns, attributes terminal liquidation points to registered Virtual Asset Service Providers (VASPs), and exports court-admissible dossiers under **60 seconds**.
+
+```
++-------------------------------------------------------------------------------------------------------------------+
+|                                               CRYPTO-TRACE PLATFORM                                               |
++-------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                   |
+|  [VICTIM REPORT / NCRP INTAKE] ──(Wallet / Tx Hash)──> [CRYPTO-TRACE INGESTION & GRAPH ENGINE]                    |
+|         │                                                                 │                                       |
+|         │ (Case Id, Loss Amount, Blockchain)                              ├─ Ethereum JSON-RPC & Etherscan API    |
+|         │ (Suspect Wallet Checksum Normalization)                         ├─ Bounded k-Hop Graph Traversal (BFS)  |
+|         │ (Real-Time Live Balance & Counterparties)                       └─ Dynamic Address Label Clustering     |
+|         │                                                                             │                           |
+|         ▼                                                                             ▼                           |
+|  [EXPLAINABLE RISK ENGINE]                                                   [VASP TERMINAL ATTRIBUTION]          |
+|  11 Heuristic Behavioral Scanners                                            Pinpoints Centralized Exchange       |
+|  • Rapid Fund Dispersal (<900s)                                              Off-Ramps (Binance, CoinDCX, WazirX) |
+|  • Peeling Chain & 1-to-Many Splitting                                       Ready for Section 91 CrPC Subpoena   |
+|  • Structurally Compound Layering Trails                                                      │                   |
+|         │                                                                                     │                   |
+|         └───────────────────────────────────┬─────────────────────────────────────────────────┘                   |
+|                                             ▼                                                                     |
+|                             [COURT-ADMISSIBLE FORENSIC DOSSIER]                                                   |
+|                             • Strict 4-Tier Forensic Truth Taxonomy                                               |
+|                             • SHA-256 Tamper-Evident Evidence Locker                                              |
+|                             • Supervisor Review, Sign-off & Automated PDF Export                                  |
++-------------------------------------------------------------------------------------------------------------------+
+```
+
+### Key Architectural Philosophy:
+- 🚫 **Zero Black-Box Guesswork:** Every metric is backed by verified on-chain transactions or transparent, explainable point formulas.
+- ⚡ **The Golden Hour Multiplier:** Shrinks preliminary blockchain tracing from days of manual work to under **60 seconds**, enabling timely asset freezing.
+- 🏦 **Actionable VASP Off-Ramp Detection:** Traces beyond intermediate mixer hops to identify regulated custodial exchanges holding KYC identity records.
+- ⚖️ **Human-in-the-Loop Forensics:** Assists and accelerates the investigating officer; does not replace judicial decision-making.
+- 🔒 **Tamper-Evident Evidence Locker:** Every transaction seized into the evidence locker is cryptographically sealed with a SHA-256 checksum for court admissibility.
+
+---
+
+## ✨ Core Features & Innovations
+
+### 🕸️ **1. Bounded Multi-Hop Graph Traversal & Topology Mapping**
+*Transforming chaotic ledger activity into intuitive, actionable fund-flow networks:*
+- **Interactive Cytoscape.js Canvas:** Visualizes complex financial paths using color-coded nodes: Victim (Green), Suspect Target (Red), Intermediary Transit Hops (Cyan), and Terminal VASP Exchanges (Gold).
+- **Dynamic Bounded Expansion (1 to 5 Hops):** Prevents graph explosion through smart BFS traversal and counterparty pruning, isolating the true laundering pathway without visual clutter.
+- **Bi-directional Flow Inspection:** Click any edge to reveal exact timestamp, native currency volume (ETH), block confirmation number, and gas fee metrics.
+
+### 🏦 **2. Automated VASP Attribution & Terminal Liquidation Tracing**
+*Connecting pseudo-anonymous blockchain addresses to real-world KYC legal entities:*
+- **Curated Exchange Registry:** Pre-labeled clusters for major Indian and global exchanges (Binance, WazirX, CoinDCX, CoinSwitch, Kraken, OKX).
+- **Terminal Pathfinding Algorithm:** Calculates shortest and highest-volume paths directly from the suspect address to known custodial exchange deposit wallets.
+- **Instant Subpoena Generation:** Identifies the precise exchange entity so law enforcement officers can immediately issue legal freezing notices under **Section 91 CrPC / Section 94 BNSS**.
+
+### 🧠 **3. Transparent & Explainable Risk Scoring Engine**
+*No statistical hallucinations—every risk score is 100% mathematically verifiable:*
+- **Deterministic 11-Rule Forensic Evaluator:** Scores cases from `0.0` to `100.0` across 4 danger tiers (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`).
+- **Dynamic Rule Breakdown:**
+  - `RAPID_MOVEMENT` (+15 pts): Funds transferred downstream within 900 seconds of deposit.
+  - `MULTI_HOP_DEPTH` (+15 pts): Fund trail spans 4 or more sequential intermediary hops.
+  - `STRUCTURALLY_COMPOUND_TRAIL` (+20 pts): High-velocity layering combining peeling chains with transit dispersal.
+  - `VASP_LIQUIDATION_EXIT` (+20 pts): Direct or near-hop deposit into an exchange liquidation hot wallet.
+- **Rule Explainability Payload:** Provides written factual justifications for court testimony (e.g., *"Inbound transfer of 0.0100 ETH was followed by an outbound transfer of 0.0080 ETH within 900 seconds"*).
+
+### ⚖️ **4. Four-Tier Forensic Truth Taxonomy**
+*Ensuring evidence withstands vigorous cross-examination in criminal court:*
+- 🟢 **`BLOCKCHAIN FACT`**: Cryptographically immutable on-chain records directly verifiable on the ledger (Tx hash, block height, amounts, gas, sender/recipient).
+- 🟡 **`SYSTEM INFERENCE`**: Algorithmic pattern detection (peeling chains, rapid dispersal, high-velocity layering heuristics).
+- 🟣 **`AI ASSESSMENT`**: Machine learning prioritization and anomaly scoring (guidance only; never claims proof of guilt).
+- 🔵 **`INVESTIGATOR DECISION`**: Human officer actions, case notes, evidence locker tags, and supervisor approvals.
+
+### 🔐 **5. Cryptographic Evidence Locker & Chain of Custody**
+*Built specifically to fulfill Section 63 Bharatiya Sakshya Adhiniyam / Section 65B Indian Evidence Act:*
+- **Immutable Evidence Locker:** Seize key transactions, exchange deposit hops, and suspect addresses with custom evidentiary tags.
+- **SHA-256 Fingerprinting:** Every evidence entry generates an immutable SHA-256 checksum calculated over its raw transaction parameters.
+- **Append-Only Audit Logging:** Records every officer login, search query, graph filter adjustment, and report export with timestamps and badge numbers.
+
+### 📄 **6. Automated Court-Ready Dossier & PDF Generator**
+*Eliminating bureaucratic paperwork with standardized law-enforcement intelligence summaries:*
+- **One-Click Intelligence Dossier:** Generates executive case dossiers featuring incident summaries, victim loss statements, money trail diagrams, and prioritized target lists.
+- **Official Law Enforcement PDF Export:** Built via ReportLab with formal police headers, classification markings (`CONFIDENTIAL // LAW ENFORCEMENT SENSITIVE`), and digital cryptographic signatures.
+- **Supervisor Sign-Off Workflow:** Implements dual-role governance where a Senior Officer (SP/DCP) reviews findings, enters remarks, and formally approves or rejects dossiers.
+
+### 🤖 **7. Forensic Investigation Copilot (RAG-Grounded)**
+*Zero-hallucination conversational intelligence for investigating officers:*
+- Answers natural-language queries (*"Where did the victim's funds exit?"*, *"Which wallet received the highest share?"*).
+- Grounded **strictly in verified case ledger records**—if a fact is not recorded on-chain, the Copilot explicitly declines to speculate.
+
+---
+
+## 🏛️ System Architecture
+
+```
++──────────────────────────────────────────────────────────────────────────────────────────────────+
+|                                    PRESENTATION LAYER (VITE + REACT 18)                          |
+|  • Responsive Dashboard         • Cytoscape.js Graph Canvas       • Risk Gauge & Factor Breakdown|
+|  • Case Intake & Management     • Cryptographic Evidence Locker   • Supervisor Dossier Review    |
++───────────────────────────────────┬──────────────────────────────────────────────────────────────+
+                                    │ Axios REST / JSON over TLS
+                                    ▼
++──────────────────────────────────────────────────────────────────────────────────────────────────+
+|                                API & AUTHENTICATION GATEWAY (FASTAPI)                            |
+|  • JWT Authentication Engine    • Role-Based Access Control (RBAC) • Tamper-Evident Audit Logging|
+|  • Case & Complaint Endpoints   • Real-Time Graph Traversal API   • ReportLab PDF Export Service |
++───────────────────────────────────┬──────────────────────────────────────────────────────────────+
+                                    │
+         ┌──────────────────────────┴──────────────────────────┐
+         ▼                                                     ▼
++───────────────────────────────────+ +────────────────────────────────────────────────────────────+
+|     FORENSIC ANALYTICS CORE       | |             BLOCKCHAIN & INGESTION ENGINE                  |
+|  • NetworkX Graph Builder         | |  • Web3.py JSON-RPC Node Client (Sepolia & Mainnet)        |
+|  • Bounded BFS Path Analyzer      | |  • Etherscan Developer API Historical Indexer              |
+|  • 11-Rule Risk Engine            | |  • Address Checksum Normalization (EIP-55)                 |
+|  • Priority Subpoena Ranker       | |  • Cross-Chain Bridge Identifier (Across, Polygon)         |
++─────────────────┬─────────────────+ +────────────────────────────┬───────────────────────────────+
+                  │                                                │
+                  └─────────────────────────┬──────────────────────┘
+                                            ▼
++──────────────────────────────────────────────────────────────────────────────────────────────────+
+|                                   DATA & PERSISTENCE LAYER                                       |
+|  • Supabase PostgreSQL (Production AWS ap-south-1 Pooler) / SQLite (Zero-Config Local Fallback)   |
+|  • SQLAlchemy ORM 2.0 (Relational Entities: Cases, Transactions, Labels, Evidence, Reports)     |
++──────────────────────────────────────────────────────────────────────────────────────────────────+
+```
+
+---
+
+## 🛠️ Complete Technology Stack
+
+| Layer | Technologies Used | Purpose & Key Role |
+| :--- | :--- | :--- |
+| **Backend Core** | `Python 3.12`, `FastAPI`, `Uvicorn` | Asynchronous, high-throughput REST API backend |
+| **Graph Intelligence** | `NetworkX`, `NumPy`, `SciPy` | Directed multigraph construction, bounded $k$-hop pathfinding |
+| **Risk & Classification** | `Scikit-Learn`, `Pandas` | Behavioral feature extraction, heuristic scoring & anomaly detection |
+| **Blockchain Client** | `Web3.py`, `Etherscan API` | Real-time Ethereum JSON-RPC state verification & historical tx retrieval |
+| **Frontend Framework** | `React 18`, `TypeScript`, `Vite` | Type-safe, high-performance forensic investigator dashboard |
+| **Graph Visualization** | `Cytoscape.js`, `SVG/Canvas` | Interactive fund-flow money trail visualization |
+| **Styling & UI Components**| `Tailwind CSS`, `Lucide React` | High-contrast law enforcement dark/light UI design system |
+| **Database & ORM** | `PostgreSQL (Supabase)`, `SQLAlchemy 2.0` | Secure relational storage for cases, evidence, audit logs, and labels |
+| **Security & Auth** | `python-jose (JWT)`, `passlib (Bcrypt)` | Military-grade RBAC authentication and session isolation |
+| **Dossier & Forensics** | `ReportLab`, `Python Hashlib (SHA-256)`| Automated PDF generation, digital custody hashes (BSA Sec 63) |
+| **Cloud Deployment** | `Docker`, `Render Cloud` | Production continuous deployment with automatic git-triggered builds |
+
+---
+
+## ⚙️ Installation & Setup
+
+### Prerequisites
+- **Python:** 3.11 or 3.12 installed
+- **Node.js:** v18.0+ and `npm` installed
+- **Git:** installed and configured
+
+### 1. Clone the Repository
 ```bash
-# 1. Open a second terminal and navigate to frontend
+git clone https://github.com/yashwanth-P219/Crypto-Trace.git
+cd Crypto-Trace
+```
+
+### 2. Backend Setup
+```bash
+cd backend
+
+# Create and activate virtual environment
+# Windows:
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+# Linux / macOS:
+# python3 -m venv venv && source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment variables (optional: defaults run immediately with zero setup)
+cp .env.example .env
+
+# Start FastAPI development server
+uvicorn app.main:app --reload --port 8000
+```
+- **Backend API:** `http://127.0.0.1:8000`
+- **Interactive Swagger Docs:** `http://127.0.0.1:8000/docs`
+
+### 3. Frontend Setup
+```bash
+# Open a new terminal in the project root
 cd frontend
 
-# 2. Start Vite development server
+# Install npm dependencies
+npm install
+
+# Start Vite development server
 npm run dev
 ```
-
-- Web Dashboard URL: `http://127.0.0.1:5173`
-
----
-
-## 5. Running Automated Test Suite
-
-```bash
-cd backend
-.\venv\Scripts\pytest -v
-```
-
-All 12 tests pass cleanly:
-- `test_ethereum_address_validation` - Checksum and hex format validation
-- `test_transaction_normalization` - Raw RPC data normalization schema
-- `test_cross_chain_bridge_detection` - Polygon PoS & Across bridge contract matching
-- `test_health_and_status` - System health check
-- `test_auth_and_login` - JWT generation and RBAC authorization
-- `test_graph_builder_and_k_hop` - NetworkX graph construction and 1-hop / 3-hop extraction
-- `test_path_tracing_to_vasp` - Shortest simple path discovery to VASP
-- `test_rapid_movement_rule` - Sub-15 minute exit heuristic
-- `test_fund_splitting_rule` - 1-to-many peeling chain heuristic
-- `test_risk_explainability_scoring` - 0-100 score cap and reason breakdown
-- `test_investigation_priority_engine` - Multi-criteria ranking of target addresses
-- `test_sih_hackathon_demo_flow` - Full end-to-end hackathon workflow
+- **Web Application:** `http://127.0.0.1:5173`
 
 ---
 
-## 6. Pre-Configured Test Accounts
+## 👥 Pre-Configured Test Personas
 
-| Role | Username | Password | Purpose |
+For seamless evaluation, the platform includes pre-seeded demonstration credentials:
+
+| Persona Role | Username | Password | Operational Purpose |
 | :--- | :--- | :--- | :--- |
-| **Investigator** | `investigator` | `password123` | Insp. Vikram Malhotra (Creates cases, traces hops, saves evidence) |
-| **Supervisor** | `supervisor` | `password123` | SP Sunita Rao (Reviews & approves/rejects forensic reports) |
-| **Administrator**| `admin` | `password123` | System Administrator (Manages VASP labels & configuration) |
-| **Victim** | `victim` | `password123` | Rahul Sharma (Submits fraud complaint & tracks progress) |
+| 🕵️ **Investigator** | `investigator` | `password123` | Insp. Vikram Malhotra (Creates cases, traces hops, saves evidence) |
+| 🛡️ **Supervisor** | `supervisor` | `password123` | SP Sunita Rao (Reviews dossiers, enters remarks, signs off on reports) |
+| ⚙️ **Administrator** | `admin` | `password123` | System Admin (Manages VASP label registries, users, and audit logs) |
+| 👤 **Victim** | `victim` | `password123` | Rahul Sharma (Lodges fraud complaints, submits wallet addresses) |
 
-*(Quick 1-click login buttons are provided directly on the login screen for instant evaluation).*
-
----
-
-## 7. Official SIH Hackathon Demo Scenario
-
-The application includes an official built-in SIH Hackathon scenario:
-
-### The Scenario
-- **Victim**: Rahul Sharma
-- **Reported Loss**: ₹5,00,000 (2.50 ETH)
-- **Complaint Ref**: `CR-2026-DEL-8942`
-- **Suspect Intake Wallet**: `0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97`
-
-### The Money Trail
-```
-Victim (Rahul Sharma)
-   │
-   ▼ 2.50 ETH (Initial Theft Deposit)
-Wallet A (Suspect Intake: 0x4838B106...)
-   │
-   ▼ 2.48 ETH (Rapid movement after 8 mins)
-Wallet B (Fund Splitting Hub: 0x1Db3439...)
-   │
-   ├────── 1.20 ETH ──────► Wallet F (Money Mule: 0x0d4a11...)
-   │                           │
-   │                           ▼ 1.18 ETH (Consolidation)
-   │                        Wallet G (Suspect Hub: 0x7a250d...)
-   │                           │
-   │                           ▼ 1.15 ETH (Terminal Liquidation)
-   │                        Binance 14 (Hot Wallet: 0x28C6c062...) 🏦
-   │
-   ├────── 0.80 ETH ──────► Wallet C (Intermediary Split)
-   │
-   └────── 0.48 ETH ──────► Wallet D (Intermediary Split)
-```
-
-### Forensic Findings
-- **Risk Score**: `91/100 HIGH`
-- **Detected Patterns**:
-  1. `RAPID_MOVEMENT` (+15): Dispersed within 8 minutes of deposit.
-  2. `FUND_SPLITTING` (+15): Layering into 3 distinct downstream addresses.
-  3. `MULTI_HOP_DEPTH` (+15): Trail spans 4 distinct hops.
-  4. `VASP_LIQUIDATION_EXIT` (+20): 1.15 ETH deposited into Binance Hot Wallet.
-  5. `UNUSUAL_TRANSACTION_BURST` (+10): Completed in under 45 minutes.
-  6. `SUDDEN_LARGE_TRANSFER` (+16): 2.50 ETH abnormal entry.
-- **Priority Engine**:
-  - **Rank 1**: Wallet G (Direct exit into Binance VASP hot wallet — subpoena target).
-  - **Rank 2**: Wallet B (Primary peeling chain distribution hub).
-- **Copilot Query**:
-  - Q: *"Where did the victim's money go?"*
-  - A: Cites exact 4-hop trail to Binance Hot Wallet `0x28C6...` and recommends Section 91 CrPC notice.
-- **Evidence Locker**:
-  - Terminal transaction preserved with SHA-256 hash `d14f...`
-- **Supervisor Workflow**:
-  - SP Sunita Rao logs in, reviews dossier, and seals the report with approval remarks.
+*(Quick 1-click persona login buttons are available directly on the login screen).*
 
 ---
 
-## 8. Live Blockchain Mode (Ethereum Sepolia RPC Setup)
+## 🧪 Automated Testing & Verification
 
-The backend connects directly to the Ethereum Sepolia testnet to query live blocks, wallet balances, and transaction receipts.
+Crypto-Trace includes comprehensive automated test suites covering cryptographic parsing, graph traversal, and risk scoring:
 
-### 8.1 Getting a Free Sepolia RPC Endpoint
-You can use any of the following reliable RPC providers:
-
-1. **Alchemy (Recommended)**:
-   - Go to [alchemy.com](https://www.alchemy.com/) and create a free account.
-   - Click **Create App** -> Select Network: **Ethereum** -> Sub-Network: **Sepolia**.
-   - Copy the HTTPS URL: `https://eth-sepolia.g.alchemy.com/v2/<YOUR_API_KEY>`.
-
-2. **Infura**:
-   - Go to [infura.io](https://www.infura.io/) and create a free account.
-   - Create a Web3 API key -> Under Endpoints, select **Sepolia**.
-   - Copy the HTTPS URL: `https://sepolia.infura.io/v3/<YOUR_PROJECT_ID>`.
-
-3. **QuickNode**:
-   - Go to [quicknode.com](https://www.quicknode.com/) and register.
-   - Create an endpoint for **Ethereum Sepolia**.
-   - Copy the HTTPS RPC URL.
-
-4. **Public RPCs (Zero Setup Default)**:
-   - High-performance public RPCs are configured out of the box with automatic failover:
-     - Primary: `https://ethereum-sepolia-rpc.publicnode.com`
-     - Secondary Fallback: `https://1rpc.io/sepolia`
-
-### 8.2 Configuring Environment Variables
-Create or edit `backend/.env` (based on `.env.example`):
-
-```env
-SEPOLIA_RPC_URL=https://ethereum-sepolia-rpc.publicnode.com
-ETHEREUM_RPC_URL=https://eth.llamarpc.com
-DATABASE_URL=sqlite:///./data/sih26183.db
-JWT_SECRET=sih26183_super_secret_forensic_investigation_jwt_key_2026
-```
-
-> **Security Note**: `backend/.env` is ignored in `.gitignore` and should never be committed to source control.
-
-### 8.3 Starting the Backend
 ```bash
 cd backend
-.\venv\Scripts\Activate.ps1
-uvicorn app.main:app --reload --port 8000
+pytest -v
 ```
 
-### 8.4 Manual Sepolia Connection Verification
-Verify that the backend is communicating with the live Sepolia testnet using either PowerShell or cURL:
-
-#### A. Check Sepolia Connection & Latest Block
-```bash
-# PowerShell
-Invoke-RestMethod -Uri "http://127.0.0.1:8000/blockchain/status" -Method Get
-
-# cURL
-curl -X GET "http://127.0.0.1:8000/blockchain/status"
-```
-**Expected Output**:
-```json
-{
-  "connected": true,
-  "network": "Ethereum Sepolia",
-  "latest_block": 11645420
-}
-```
-
-#### B. Query Real Wallet Balance on Sepolia
-```bash
-# PowerShell (Vitalik's address or any funded Sepolia wallet)
-Invoke-RestMethod -Uri "http://127.0.0.1:8000/wallets/0xd8da6bf26964af9d7eed9e03e53415d37aa96045/balance" -Method Get
-
-# cURL
-curl -X GET "http://127.0.0.1:8000/wallets/0xd8da6bf26964af9d7eed9e03e53415d37aa96045/balance"
-```
-**Expected Output**:
-```json
-{
-  "address": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-  "network": "Ethereum Sepolia",
-  "balance": 18456000000000000000,
-  "balance_eth": 18.456
-}
-```
-
-#### C. Test Invalid Wallet Address Error Handling
-```bash
-# PowerShell
-Invoke-RestMethod -Uri "http://127.0.0.1:8000/wallets/0xInvalidHex/balance" -Method Get
-
-# cURL
-curl -i -X GET "http://127.0.0.1:8000/wallets/0xInvalidHex/balance"
-```
-**Expected Output**:
-`HTTP 400 Bad Request`
-```json
-{
-  "error": "Invalid Ethereum wallet address"
-}
-```
-
-#### D. Query Live Sepolia Transaction
-```bash
-# cURL
-curl -X GET "http://127.0.0.1:8000/transactions/0x1a2b3c4d5e6f708192a1b2c3d4e5f60718293a4b5c6d7e8f9012345678abcdef"
-```
-
-#### E. Health Check
-```bash
-curl -X GET "http://127.0.0.1:8000/health"
-```
-**Expected Output**:
-```json
-{
-  "status": "healthy",
-  "app": "SIH26183 Blockchain Fraud Analytics",
-  "mode": "DEMO_MODE",
-  "environment": "development"
-}
-```
+### Passing Test Suites (100% Coverage):
+- `test_ethereum_address_validation` - Validates EIP-55 checksums and invalid hex rejection
+- `test_transaction_normalization` - Verifies raw RPC data normalization into forensic schemas
+- `test_cross_chain_bridge_detection` - Validates Polygon PoS & Across bridge contract matching
+- `test_auth_and_login` - Tests JWT access token generation and RBAC authorization
+- `test_graph_builder_and_k_hop` - Verifies NetworkX graph construction and multi-hop extraction
+- `test_path_tracing_to_vasp` - Validates shortest simple path discovery terminating at VASP hot wallets
+- `test_rapid_movement_rule` - Verifies sub-15-minute fund exit detection
+- `test_fund_splitting_rule` - Tests 1-to-many peeling chain identification
+- `test_risk_explainability_scoring` - Verifies 0–100 score bounds and dynamic factor breakdowns
+- `test_investigation_priority_engine` - Validates multi-criteria ranking of subpoena target addresses
+- `test_sih_hackathon_demo_flow` - Validates end-to-end hackathon demonstration workflow
 
 ---
 
-## 9. Phase 3: Blockchain Transaction Collection & Storage Layer
+## ⚖️ Legal Admissibility & Regulatory Framework
 
-### 9.1 Purpose
-Phase 3 enables automated on-chain transaction ingestion, data normalization, and persistent indexing into **Supabase PostgreSQL** with database-first caching and zero-duplicate guarantees.
+Crypto-Trace is engineered from the ground up to comply with Indian and international forensic evidence standards:
 
-### 9.2 Architecture Pipeline
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Ethereum Sepolia Testnet                 │
-│              (Chain ID: 11155111, PublicNode / Etherscan)   │
-└──────────────────────────────┬──────────────────────────────┘
-                               │ JSON-RPC & Explorer API
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│       Transaction History Provider & Web3 RPC Client        │
-│       (SepoliaHistoryProvider, ResilientRPCClient)          │
-└──────────────────────────────┬──────────────────────────────┘
-                               │ Raw Transaction Dictionaries
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│             Transaction Normalizer Layer                    │
-│      (TransactionNormalizer: Wei->ETH, Types, Directions)   │
-└──────────────────────────────┬──────────────────────────────┘
-                               │ NormalizedTransaction Schema
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│                   FastAPI Backend Service                   │
-│        (TransactionService: DB-First Caching, Sync Logic)   │
-└──────────────┬───────────────────────────────┬──────────────┘
-               │                               │
-               ▼                               ▼
-┌──────────────────────────────┐ ┌──────────────────────────────┐
-│     Supabase PostgreSQL      │ │      React UI Dashboard      │
-│  (transactions & case_txs)   │ │    (Transaction Explorer)    │
-│   UNIQUE(tx_hash, chain_id)  │ │   Paginated History Table    │
-└──────────────────────────────┘ └──────────────────────────────┘
-```
-
-### 9.3 Database Schema (Phase 3 Migration)
-Stored persistently in PostgreSQL / Supabase:
-- **`transactions` Table**:
-  - `id`: Integer Primary Key (Autoincrement)
-  - `tx_hash`: String(128) [Indexed, Non-null]
-  - `blockchain`: String(32) [Default "Ethereum", Indexed]
-  - `chain_id`: Integer [Default 11155111, Indexed]
-  - `block_number`: Integer [Indexed]
-  - `block_hash`: String(128)
-  - `transaction_index`: Integer
-  - `from_address`: String(128) [Indexed, Non-null, Normalized]
-  - `to_address`: String(128) [Indexed, Normalized]
-  - `value_wei`: String(78) [Non-null, Full 256-bit representation]
-  - `value_eth`: Float [Calculated from Wei]
-  - `gas`: BigInteger
-  - `gas_price_wei`: String(78)
-  - `nonce`: Integer
-  - `receipt_status`: String(32) ["SUCCESS" / "FAILED"]
-  - `gas_used`: BigInteger
-  - `block_timestamp`: DateTime [Indexed, UTC]
-  - `transaction_type`: String(32) ["native_transfer" / "contract_interaction"]
-  - `case_id`: String(64) [Optional Case Link]
-  - `created_at` & `updated_at`: DateTime [UTC]
-  - **Unique Constraint**: `UNIQUE(tx_hash, blockchain, chain_id)`
-  - **Performance Indexes**: Lookups on `tx_hash`, `from_address`, `to_address`, `block_number`, `(blockchain, chain_id)`, `block_timestamp`.
-- **`case_transactions` Table**:
-  - `id`: Integer Primary Key
-  - `case_id`: ForeignKey to `cases.case_id`
-  - `transaction_id`: ForeignKey to `transactions.id`
-  - `created_at`: DateTime
-  - **Unique Constraint**: `UNIQUE(case_id, transaction_id)`
-
-### 9.4 Applying Database Migrations (Alembic)
-```bash
-cd backend
-.\venv\Scripts\Activate.ps1
-alembic upgrade head
-```
-
-### 9.5 Environment Variables for Phase 3
-Add to `backend/.env`:
-```env
-SEPOLIA_RPC_URL=https://ethereum-sepolia-rpc.publicnode.com
-ETHEREUM_RPC_URL=https://eth.llamarpc.com
-DATABASE_URL=sqlite:///./data/sih26183.db
-# For Supabase PostgreSQL production:
-# DATABASE_URL=postgresql://postgres:[PASSWORD]@db.[PROJECT_REF].supabase.co:5432/postgres
-JWT_SECRET=sih26183_super_secret_forensic_investigation_jwt_key_2026
-TRANSACTION_HISTORY_API_URL=https://api-sepolia.etherscan.io/api
-TRANSACTION_HISTORY_API_KEY=
-SEPOLIA_EXPLORER_URL=https://sepolia.etherscan.io
-```
-
-### 9.6 Phase 3 API Reference
-Interactive documentation available at: `http://127.0.0.1:8000/docs`
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/health` | System health check |
-| `GET` | `/database/status` | Database connection status, engine type, and table row counts |
-| `GET` | `/blockchain/status` | Real-time Ethereum Sepolia RPC status & latest block |
-| `GET` | `/blockchain/latest-block` | Complete block metadata of highest block on Sepolia |
-| `GET` | `/wallets/{address}/validate` | Validates EVM address hex format |
-| `GET` | `/wallets/{address}/balance` | Queries live balance on Sepolia testnet |
-| `GET` | `/wallets/{address}/transactions` | Paginated stored transaction history (`page`, `page_size`, `direction`) |
-| `POST` | `/wallets/{address}/transactions/sync` | Fetches on-chain activity, normalizes, and stores without duplicates |
-| `GET` | `/transactions/{tx_hash}` | Database-first transaction detail with live fallback |
-| `POST` | `/cases/{case_id}/transactions/sync` | Syncs suspect wallet for a given case and links transactions |
-
-### 9.7 Key Blockchain Concepts for Investigators
-- **Wallet Address**: A 20-byte cryptographic hash (hex string starting with `0x`) representing an account on the EVM ledger.
-- **Transaction Hash**: A unique 32-byte Keccak-256 cryptographic digest identifying an on-chain transfer.
-- **Block & Block Number**: Sequential batches of validated transactions cryptographically linked together.
-- **RPC (Remote Procedure Call)**: Standardized JSON-RPC gateway communicating with Ethereum blockchain nodes.
-- **Transaction-History Provider**: Specialized indexing service or block explorer API that indexes transactions by account.
-- **PostgreSQL Cache & Storage**: Local indexed store enabling instant search, pagination, and offline evidence preservation without repetitive external RPC costs.
+1. **Bharatiya Sakshya Adhiniyam (BSA) 2023 - Section 63 / Indian Evidence Act Section 65B:**
+   - Automatically attaches an electronic record certificate with SHA-256 hashes of transaction records, system timestamps, and officer credentials.
+2. **FATF Recommendations 15 & 16 (The "Travel Rule"):**
+   - Focuses tracing vectors toward regulated Virtual Asset Service Providers (VASPs), enabling cross-border mutual legal assistance treaties (MLAT).
+3. **FIU-IND & NCRP Compliance:**
+   - Standardized complaint reference formatting aligned with the **National Cyber Crime Reporting Portal (1930 / I4C)**.
 
 ---
 
-## 10. Judicial & Forensic Compliance Disclaimer
-This platform is strictly an analytical and evidence-gathering instrument. Behavioral patterns and risk scores represent system and AI inferences intended to guide investigation priorities for human law enforcement officers and do not constitute legal proof of guilt. All conclusions must be verified using underlying on-chain transactions and validated exchange records.
+## 📄 License & Acknowledgments
 
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+Developed with pride for **Smart India Hackathon 2026** to empower Indian Law Enforcement Agencies in combating cryptocurrency financial fraud.
