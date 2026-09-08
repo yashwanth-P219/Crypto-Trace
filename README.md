@@ -14,7 +14,7 @@
 [![Tests Passing](https://img.shields.io/badge/Tests-12%2F12%20Passed-brightgreen?style=flat-square&logo=checkmarx&logoColor=white)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
-[🌐 Live Platform](https://cryptotrace.onrender.com/) • [🎯 Problem Statement](#-smart-india-hackathon-problem-statement-sih26183) • [👥 The Builders](#-the-builders-project-team) • [💡 Solution Overview](#-solution-overview) • [✨ Core Features](#-core-features--innovations) • [🏛️ System Architecture](#️-system-architecture) • [⚖️ Forensic Truth Taxonomy](#️-four-tier-forensic-truth-taxonomy) • [🛠️ Tech Stack](#️-complete-technology-stack) • [⚙️ Setup & Installation](#-installation--setup) • [🧪 Testing](#-automated-testing--verification) • [📄 LICENSE](LICENSE)
+[🌐 Live Platform](https://cryptotrace.onrender.com/) • [🎯 Problem Statement](#-smart-india-hackathon-problem-statement-sih26183) • [💡 Solution Overview](#-solution-overview) • [✨ Core Features](#-core-features--innovations) • [🏛️ System Architecture](#️-system-architecture) • [⚖️ Forensic Truth Taxonomy](#️-four-tier-forensic-truth-taxonomy) • [🛠️ Tech Stack](#️-complete-technology-stack) • [⚙️ Setup & Installation](#-installation--setup) • [🧪 Testing](#-automated-testing--verification) • [📄 LICENSE](LICENSE)
 
 </div>
 
@@ -40,21 +40,6 @@ Traditional manual law enforcement workflows collapse due to **5 systemic bottle
 3. **The Attribution Blindspot:** Investigators lack automated cluster matching to determine which specific downstream deposit address belongs to an Indian or global exchange holding KYC identity records.
 4. **Judicial Inadmissibility of "Black-Box AI":** Unsubstantiated AI claims or probabilistic guesswork are categorically rejected by magistrates. Courts require cryptographic proof compliant with **Section 63 of Bharatiya Sakshya Adhiniyam (BSA) / Section 65B of the Indian Evidence Act**.
 5. **Absence of Chain-of-Custody Governance:** Digital evidence is frequently challenged over tampering or lack of audit trails. Without tamper-evident hashing, evidence integrity collapses during trials.
-
----
-
-## 👥 The Builders (Project Team)
-
-Proudly engineered for **Smart India Hackathon (SIH 2026)** under Problem Statement **SIH26183**:
-
-| Member Name | Role & Core Responsibilities | Focus Domain |
-| :--- | :--- | :--- |
-| **Yashwanth P** | **Team Lead & Full-Stack Architect** • Lead Software Engineer | FastAPI Core, React Engine, Multi-Hop Graph Traversal, PostgreSQL Schema & API Design |
-| **Cyber Forensic Specialist** | **Blockchain Intelligence Engineer** • Node & RPC Systems | Web3.py RPC Integration, Etherscan Ingestion, Sepolia Node Infrastructure & VASP Label Clustering |
-| **AI / ML Engineer** | **Heuristics & Risk Modeling Architect** | 11 Forensic Behavioral Rules, Scikit-Learn Classification & Explainable Scoring Engine |
-| **Frontend Architect** | **UI/UX & Design Systems Engineer** | Cytoscape.js Graph Canvas, Responsive Tailwind Systems, Dossier Viewer & Officer Experience |
-| **Legal & Policy Analyst** | **LEA Workflows & Evidence Admissibility** | BSA Sec 63 / Sec 65B Evidence Locker, I4C / NCRP Integration & Section 91 CrPC Dossier Templates |
-| **QA & Security Engineer** | **Reliability & Security Auditor** | Automated Test Suites (pytest), JWT RBAC Authorization & SHA-256 Tamper Verification |
 
 ---
 
