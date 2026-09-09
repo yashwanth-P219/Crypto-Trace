@@ -109,12 +109,18 @@ export interface MoneyTrailStep {
   transaction_hash: string;
   amount: number;
   timestamp?: string;
+  block_number?: number;
+  hop_number?: number;
+  total_hops?: number;
+  is_destination_vasp?: boolean;
+  suspicious_indicator?: string;
 }
 
 export interface MoneyTrailPath {
   hops: number;
   destination_vasp: string;
   destination_address: string;
+  is_known_vasp?: boolean;
   steps: MoneyTrailStep[];
   flow_amount: number;
 }

@@ -475,10 +475,55 @@ class ReportGenerator:
         elements.append(Paragraph("3. Multi-Hop Money Trail & Attributed VASP Exits", section_style))
         trail_info = content.get("6_money_trail", {})
         vasp_count = trail_info.get("vasp_paths_found", 0)
+        primary_path = trail_info.get("primary_terminal_path", {})
+        dest_vasp = primary_path.get("destination_vasp", "N/A") if primary_path else "N/A"
+        hops_count = primary_path.get("hops", 0) if primary_path else 0
         elements.append(Paragraph(
-            f"<b>Attributed VASP / Exchange Exit Paths Found:</b> {vasp_count}",
+            f"<b>Attributed VASP / Exchange Exit Paths Found:</b> {vasp_count} &nbsp;|&nbsp; <b>Primary Terminal VASP:</b> {dest_vasp} &nbsp;|&nbsp; <b>Total Hops:</b> {hops_count}",
             cell_style
         ))
+        elements.append(Spacer(1, 4))
+
+        trail_steps = primary_path.get("steps", []) if primary_path else []
+        if trail_steps:
+            m_rows = [[
+                Paragraph("<b>Hop #</b>", header_cell_style),
+                Paragraph("<b>From Wallet</b>", header_cell_style),
+                Paragraph("<b>To Wallet</b>", header_cell_style),
+                Paragraph("<b>Amount</b>", header_cell_style),
+                Paragraph("<b>Timestamp / Block</b>", header_cell_style),
+                Paragraph("<b>Known VASP?</b>", header_cell_style),
+                Paragraph("<b>Suspicious Indicator</b>", header_cell_style)
+            ]]
+            for s in trail_steps[:8]:
+                is_vasp_str = "YES (VASP)" if s.get("is_destination_vasp") else "Unhosted"
+                hop_str = f"Hop {s.get('hop_number', 1)}/{s.get('total_hops', hops_count)}"
+                from_str = f"{s.get('from_label', 'Wallet')}<br/><font size=6 color='#64748b'>{str(s.get('from_address', ''))[:10]}...</font>"
+                to_str = f"{s.get('to_label', 'Wallet')}<br/><font size=6 color='#64748b'>{str(s.get('to_address', ''))[:10]}...</font>"
+                amt_str = f"{float(s.get('amount', 0)):.4f} ETH"
+                time_block = f"{str(s.get('timestamp', ''))[:16]}<br/><font size=6 color='#64748b'>Blk #{s.get('block_number', 'N/A')}</font>"
+                susp_str = str(s.get("suspicious_indicator") or "Normal Flow")[:50]
+                m_rows.append([
+                    Paragraph(hop_str, cell_style),
+                    Paragraph(from_str, cell_style),
+                    Paragraph(to_str, cell_style),
+                    Paragraph(amt_str, cell_style),
+                    Paragraph(time_block, cell_style),
+                    Paragraph(is_vasp_str, cell_style),
+                    Paragraph(susp_str, cell_style)
+                ])
+            m_table = Table(m_rows, colWidths=[55, 85, 85, 65, 95, 65, 90])
+            m_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#78350f")),
+                ('BOX', (0, 0), (-1, -1), 0.5, colors.HexColor("#b45309")),
+                ('INNERGRID', (0, 0), (-1, -1), 0.5, colors.HexColor("#fde68a")),
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor("#fffbeb")]),
+                ('TOPPADDING', (0, 0), (-1, -1), 3),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 3),
+                ('LEFTPADDING', (0, 0), (-1, -1), 3),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 3),
+            ]))
+            elements.append(m_table)
         elements.append(Spacer(1, 8))
 
         # Section 4: Key Transactions

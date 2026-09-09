@@ -161,6 +161,9 @@ class PathAnalyzer:
                     # Reconstruct step by step path details
                     path_steps = []
                     total_flow = 0.0
+                    total_hops = len(path) - 1
+                    prev_step_ts = None
+
                     for i in range(len(path) - 1):
                         u, v = path[i], path[i+1]
                         # Find edge with largest amount between u and v
@@ -171,21 +174,76 @@ class PathAnalyzer:
                         best_edge = max(edge_candidates, key=lambda e: (e.get("amount") or e.get("value_eth") or 0.0))
                         edge_amount = best_edge.get("amount") if best_edge.get("amount") is not None else (best_edge.get("value_eth") or 0.0)
                         total_flow = edge_amount
+
+                        # Block number
+                        block_num = best_edge.get("block_number")
+
+                        # Timestamp handling
+                        raw_ts = best_edge.get("timestamp") or best_edge.get("block_timestamp")
+                        ts_str = raw_ts.isoformat() if hasattr(raw_ts, "isoformat") else (str(raw_ts) if raw_ts else None)
+
+                        # Check destination node and VASP attribution
+                        v_meta = self.g.nodes[v]
+                        v_label = v_meta.get("label") or "Destination Node"
+                        v_type = (v_meta.get("entity_type") or "UNKNOWN").upper()
+                        is_dest_vasp = (
+                            v_type in ("VASP", "EXCHANGE")
+                            or any(kw in (v_label or "").upper() for kw in ("BINANCE", "WAZIRX", "COINDCX", "EXCHANGE", "KRAKEN", "OKX", "COINBASE", "VASP"))
+                        )
+
+                        # Suspicious indicator determination
+                        suspicious_flags = []
+                        if best_edge.get("is_suspicious"):
+                            suspicious_flags.append("Flagged Suspicious Transaction")
+                        if i == 0:
+                            suspicious_flags.append("Suspect Dispersal Origin")
+                        if is_dest_vasp:
+                            suspicious_flags.append("Terminal VASP Liquidation")
+                        if self.g.nodes[u].get("outgoing_count", 0) > 1 or self.g.out_degree(u) > 1:
+                            suspicious_flags.append("Peeling Chain Structuring")
+
+                        # Rapid fund movement between consecutive hops
+                        if prev_step_ts and ts_str:
+                            try:
+                                import datetime
+                                t1 = datetime.datetime.fromisoformat(prev_step_ts.replace("Z", "+00:00"))
+                                t2 = datetime.datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
+                                diff_secs = abs((t2 - t1).total_seconds())
+                                if diff_secs <= 900:
+                                    suspicious_flags.append(f"Rapid Transfer ({int(diff_secs)}s)")
+                            except Exception:
+                                pass
+                        prev_step_ts = ts_str
+
+                        if edge_amount >= 1.0:
+                            suspicious_flags.append("High-Value Transfer")
+
+                        suspicious_indicator = ", ".join(suspicious_flags) if suspicious_flags else None
+
                         path_steps.append({
                             "from_address": u,
                             "from_label": self.g.nodes[u].get("label") or "Intermediate Node",
                             "to_address": v,
-                            "to_label": self.g.nodes[v].get("label") or "Destination Node",
-                            "to_entity_type": self.g.nodes[v].get("entity_type") or "UNKNOWN",
+                            "to_label": v_label,
+                            "to_entity_type": v_type,
                             "transaction_hash": best_edge.get("transaction_hash") or best_edge.get("tx_hash") or "",
                             "amount": edge_amount,
-                            "timestamp": str(best_edge.get("timestamp") or best_edge.get("block_timestamp") or "")
+                            "timestamp": ts_str,
+                            "block_number": block_num,
+                            "hop_number": i + 1,
+                            "total_hops": total_hops,
+                            "is_destination_vasp": is_dest_vasp,
+                            "suspicious_indicator": suspicious_indicator
                         })
 
                     target_meta = self.g.nodes[target]
                     label_str = target_meta.get("label")
+                    is_target_vasp = (
+                        target_meta.get("entity_type") in ("VASP", "EXCHANGE")
+                        or any(kw in (label_str or "").upper() for kw in ("BINANCE", "WAZIRX", "COINDCX", "EXCHANGE", "KRAKEN", "OKX", "COINBASE", "VASP"))
+                    )
                     if not label_str or label_str in ("Unknown Address", "Unknown Wallet"):
-                        if target_meta.get("entity_type") in ("VASP", "EXCHANGE"):
+                        if is_target_vasp:
                             dest_vasp_name = "Centralized VASP Exit"
                         else:
                             dest_vasp_name = f"Terminal Liquidation Sink ({target[:6]}...{target[-4:]})"
@@ -193,9 +251,10 @@ class PathAnalyzer:
                         dest_vasp_name = label_str
 
                     discovered_paths.append({
-                        "hops": len(path) - 1,
+                        "hops": total_hops,
                         "destination_vasp": dest_vasp_name,
                         "destination_address": target,
+                        "is_known_vasp": is_target_vasp,
                         "steps": path_steps,
                         "flow_amount": total_flow
                     })

@@ -191,26 +191,80 @@ export const ReportViewer: React.FC<ReportViewerProps> = ({
 
         {/* Section 6: Verified Money Trail */}
         {content['6_money_trail']?.primary_terminal_path && (
-          <div className="p-3.5 rounded-lg bg-amber-50 border border-amber-200 shadow-sm">
-            <div className="flex items-center justify-between mb-2">
+          <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200 shadow-sm space-y-3">
+            <div className="flex items-center justify-between">
               <p className="text-[10px] font-bold uppercase tracking-wider text-amber-800 flex items-center gap-1.5">
                 <Building className="w-3.5 h-3.5" />
-                Verified Terminal Liquidation Trail
+                Verified Terminal Liquidation Money Trail
               </p>
               <TruthBadge category="BLOCKCHAIN FACT" size="sm" />
             </div>
-            <p className="text-[#1E293B] font-semibold mb-2">
-              Funds reached verified exchange {content['6_money_trail']?.primary_terminal_path?.destination_vasp} ({content['6_money_trail']?.primary_terminal_path?.destination_address}) across {content['6_money_trail']?.primary_terminal_path?.hops} hops.
+            <p className="text-xs text-[#1E293B] font-semibold">
+              Funds reached liquidation destination <strong className="text-amber-700">{content['6_money_trail']?.primary_terminal_path?.destination_vasp}</strong> ({content['6_money_trail']?.primary_terminal_path?.destination_address}) across {content['6_money_trail']?.primary_terminal_path?.hops} hops.
             </p>
-            <div className="space-y-1 font-mono text-[11px] text-slate-700">
-              {content['6_money_trail']?.primary_terminal_path?.steps?.map((s: any, idx: number) => (
-                <div key={idx} className="flex items-center gap-2">
-                  <span className="text-slate-400">[{idx+1}]</span>
-                  <span>{s.from_label} ({s.from_address.slice(0, 6)}...)</span>
-                  <span className="text-blue-600 font-semibold">→ {s.amount} ETH →</span>
-                  <span className="text-amber-700 font-bold">{s.to_label} ({s.to_address.slice(0, 6)}...)</span>
-                </div>
-              ))}
+
+            <div className="space-y-2.5 pt-1">
+              {content['6_money_trail']?.primary_terminal_path?.steps?.map((s: any, idx: number) => {
+                const totalHops = content['6_money_trail']?.primary_terminal_path?.hops;
+                const isVasp = s.is_destination_vasp || (idx === content['6_money_trail']?.primary_terminal_path?.steps?.length - 1 && content['6_money_trail']?.primary_terminal_path?.is_known_vasp);
+
+                return (
+                  <div key={idx} className="p-3 rounded-lg bg-white border border-amber-200/80 shadow-xs space-y-2 text-[11px]">
+                    {/* Header: Hop index, Block #, Timestamp, Known VASP */}
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 rounded bg-blue-50 border border-blue-200 text-blue-700 font-mono font-bold text-[10px]">
+                          Hop {s.hop_number || idx + 1} of {s.total_hops || totalHops}
+                        </span>
+                        {isVasp ? (
+                          <span className="px-2 py-0.5 rounded bg-emerald-50 border border-emerald-200 text-emerald-800 font-bold text-[10px]">
+                            Known VASP / Exchange ({s.to_label})
+                          </span>
+                        ) : (
+                          <span className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-slate-600 text-[10px]">
+                            Unhosted / Intermediary Wallet
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-slate-500 font-mono text-[10px] space-x-2">
+                        {s.block_number && <span>Block #{s.block_number}</span>}
+                        {s.timestamp && <span>• {new Date(s.timestamp).toLocaleString()}</span>}
+                      </div>
+                    </div>
+
+                    {/* From -> To -> Amount */}
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                      <div className="md:col-span-5 font-mono text-[10px]">
+                        <span className="text-slate-400 block uppercase font-bold text-[9px]">From Wallet ({s.from_label}):</span>
+                        <span className="text-[#1E293B] font-semibold truncate block" title={s.from_address}>{s.from_address}</span>
+                      </div>
+                      <div className="md:col-span-2 text-center">
+                        <span className="font-mono font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                          {s.amount} ETH
+                        </span>
+                      </div>
+                      <div className="md:col-span-5 font-mono text-[10px]">
+                        <span className="text-slate-400 block uppercase font-bold text-[9px]">To Wallet ({s.to_label}):</span>
+                        <span className={`font-semibold truncate block ${isVasp ? 'text-amber-800 font-bold' : 'text-[#1E293B]'}`} title={s.to_address}>
+                          {s.to_address}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Transaction Hash */}
+                    <div className="font-mono text-[10px] text-slate-600 bg-slate-50 p-1.5 rounded border border-slate-100 flex items-center justify-between">
+                      <span className="truncate">Tx: {s.transaction_hash}</span>
+                    </div>
+
+                    {/* Suspicious Indicator */}
+                    {s.suspicious_indicator && (
+                      <div className="p-1.5 rounded bg-red-50 border border-red-200 text-red-800 text-[10px] font-semibold">
+                        ⚠️ Suspicious Indicator: {s.suspicious_indicator}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
